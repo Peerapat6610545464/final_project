@@ -16,7 +16,6 @@
   - See request to be a supervisor
   - Send response denying to serve as an advisor
   - See details of all the project
-  - Evaluate projects
 * logged in as an advisor
   - See request to be a advisor
   - Send accept or deny response
@@ -25,5 +24,4 @@
   - See request to be a supervisor
   - Send accept or deny response (for projects eventually serving as an advisor)
   - See details of all the project
-  - Evaluate projects
   - Approve the project
