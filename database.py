@@ -12,17 +12,22 @@ class Read:
     def read(self):
         __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-        with open(os.path.join(__location__, self.name)) as f:
-            rows = csv.DictReader(f)
-            for r in rows:
-                self.csv.append(dict(r))
+        try:
+            with open(os.path.join(__location__, self.name)) as f:
+                rows = csv.DictReader(f)
+                for r in rows:
+                    self.csv.append(dict(r))
+        except FileNotFoundError:
+            print(f"Error: File '{self.name}' not found.")
+        except csv.Error as e:
+            print(f"Error reading CSV file '{self.name}': {e}")
 
 
 # add in code for a Database class
 class DB:
     def __init__(self):
         self.database = []
+
 
     def insert(self, table):
         self.database.append(table)
@@ -50,7 +55,8 @@ class Table:
                 self.table[key] = value
 
     def join(self, other_table, common_key):
-        joined_table = Table(self.table_name + '_joins_' + other_table.table_name, [])
+        joined_table = Table(
+            self.table_name + '_joins_' + other_table.table_name, [])
         for item1 in self.table:
             for item2 in other_table.table:
                 if item1[common_key] == item2[common_key]:

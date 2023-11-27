@@ -13,15 +13,16 @@
   - See and modify project information
   - See who has responded to the requests sent out
 * logged in as a faculty
-  - See request to be a supervisor
+  - See request to be an advisor
   - Send response denying to serve as an advisor
   - See details of all the project
 * logged in as an advisor
-  - See request to be a advisor
+  - See request to be an advisor
   - Send accept or deny response
-  - See details of  the project
-* logged in as an admin
-  - See request to be a supervisor
-  - Send accept or deny response (for projects eventually serving as an advisor)
   - See details of all the project
+* logged in as an admin
+  - See request to be an advisor
+  - Change status (student, member, lead)
+  - Send accept or deny response (for projects eventually serving as an advisor)
+  - See and modify all project information
   - Approve the project

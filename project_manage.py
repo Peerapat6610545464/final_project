@@ -1,5 +1,6 @@
 # import database module
 from database import Read, DB, Table
+import csv
 
 
 # define a funcion called initializing
@@ -7,25 +8,20 @@ from database import Read, DB, Table
 def initializing():
     person = Read("persons.csv")
     login_ = Read("login.csv")
+    advisor_pending_request = Read("advisor_pending_request_table.csv")
+    member_pending_request = Read("member_pending_request_table.csv")
+    project_table = Read("project_table.csv")
     Read.read(person)
     Read.read(login_)
-    person_table = Table("Person table", person.csv)
-    login_table = Table("Login table", login_.csv)
-    project_table = {"ProjectID": "",
-                     "Title": "",
-                     "Lead": "",
-                     "Member1": "",
-                     "Member2": "",
-                     "Advisor": "",
-                     "Status": ""}
-    advisor_pending_request_table = {"ProjectID": "",
-                                     "to_be_advisor": "",
-                                     "Response": "",
-                                     "Response_date": ""}
-    member_pending_request_table = {"ProjectID": "",
-                                    "to_be_member": "",
-                                    "Response": "",
-                                    "Response_date": "", }
+    Read.read(advisor_pending_request)
+    Read.read(member_pending_request)
+    person_table = Table("Person_table", person.csv)
+    login_table = Table("Login_table", login_.csv)
+    advisor_pending_request_table = Table("advisor_pending_request",
+                                          advisor_pending_request.csv)
+    member_pending_request_table = Table("member_pending_request_table",
+                                         member_pending_request.csv)
+
     db = DB()
     db.insert(person_table)
     db.insert(login_table)
@@ -36,6 +32,7 @@ def initializing():
 # here are things to do in this function:
 
 # create an object to read all csv files that will serve as a persistent state for this program
+
 
 # create all the corresponding tables for those csv files
 
@@ -51,6 +48,7 @@ def login():
     passworld = input("Password: ")
     username_data = db.search(username)
     passworld_data = db.search(passworld)
+
 
 # here are things to do in this function:
 # add code that performs a login task
@@ -71,8 +69,8 @@ def exit():
 
 # make calls to the initializing and login functions defined above
 
-initializing()
-val = login()
+# initializing()
+# val = login()
 
 # based on the return value for login, activate the code that performs activities according to the role defined for that person_id
 
@@ -91,3 +89,5 @@ val = login()
 
 # once everyhthing is done, make a call to the exit function
 exit()
+
+
