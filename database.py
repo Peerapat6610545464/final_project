@@ -17,22 +17,24 @@ class Read:
             rows = csv.DictReader(f)
             for r in rows:
                 self.csv.append(dict(r))
-
+        return self.csv
 
 # add in code for a Database class
 class DB:
     def __init__(self):
         self.database = []
 
-
     def insert(self, table):
         self.database.append(table)
 
-    def search(self, table_name):
-        for table in self.database:
-            if table.table_name == table_name:
-                return table
+    def search(self, key):
+        for i in self.database:
+            if i.key == key:
+                return i
         return None
+
+    def database(self):
+        return self.database
 
 
 # add in code for a Table class

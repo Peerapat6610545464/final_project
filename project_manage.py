@@ -8,9 +8,10 @@ import csv
 def initializing():
     person = Read("persons.csv")
     login_ = Read("login.csv")
-    advisor_pending_request = Read("advisor_pending_request_table.csv")
-    member_pending_request = Read("member_pending_request_table.csv")
+    advisor_pending_request = Read("advisor_pending_request.csv")
+    member_pending_request = Read("member_pending_request.csv")
     project_table = Read("project_table.csv")
+
     Read.read(person)
     Read.read(login_)
     Read.read(advisor_pending_request)
@@ -21,14 +22,15 @@ def initializing():
                                           advisor_pending_request.csv)
     member_pending_request_table = Table("member_pending_request_table",
                                          member_pending_request.csv)
+    db_ = DB()
+    db_.insert(person_table)
+    db_.insert(login_table)
+    db_.insert(project_table)
+    db_.insert(advisor_pending_request_table)
+    db_.insert(member_pending_request_table)
+    with open('advisor_pending_request.csv', 'w') as csv_file:
+        csv_write = csv.writer(csv_file, delimiter = ',')
 
-    db = DB()
-    db.insert(person_table)
-    db.insert(login_table)
-    db.insert(project_table)
-    db.insert(advisor_pending_request_table)
-    db.insert(member_pending_request_table)
-    return db
 
 # here are things to do in this function:
 
@@ -47,10 +49,8 @@ def initializing():
 def login():
     username = input("Username: ")
     passworld = input("Password: ")
-    username_data = db.search(username)
-    passworld_data = db.search(passworld)
-    print(username_data)
-    print(passworld_data)
+    with
+
 
 # here are things to do in this function:
 # add code that performs a login task
@@ -71,8 +71,8 @@ def exit():
 
 # make calls to the initializing and login functions defined above
 
-# db = initializing()
-# val = login()
+db = initializing()
+val = login()
 
 # based on the return value for login, activate the code that performs activities according to the role defined for that person_id
 
