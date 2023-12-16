@@ -12,15 +12,11 @@ class Read:
     def read(self):
         __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        try:
-            with open(os.path.join(__location__, self.name)) as f:
-                rows = csv.DictReader(f)
-                for r in rows:
-                    self.csv.append(dict(r))
-        except FileNotFoundError:
-            print(f"Error: File '{self.name}' not found.")
-        except csv.Error as e:
-            print(f"Error reading CSV file '{self.name}': {e}")
+
+        with open(os.path.join(__location__, self.name)) as f:
+            rows = csv.DictReader(f)
+            for r in rows:
+                self.csv.append(dict(r))
 
 
 # add in code for a Database class

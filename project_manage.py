@@ -28,6 +28,7 @@ def initializing():
     db.insert(project_table)
     db.insert(advisor_pending_request_table)
     db.insert(member_pending_request_table)
+    return db
 
 # here are things to do in this function:
 
@@ -48,7 +49,8 @@ def login():
     passworld = input("Password: ")
     username_data = db.search(username)
     passworld_data = db.search(passworld)
-
+    print(username_data)
+    print(passworld_data)
 
 # here are things to do in this function:
 # add code that performs a login task
@@ -69,7 +71,7 @@ def exit():
 
 # make calls to the initializing and login functions defined above
 
-# initializing()
+# db = initializing()
 # val = login()
 
 # based on the return value for login, activate the code that performs activities according to the role defined for that person_id
@@ -89,5 +91,4 @@ def exit():
 
 # once everyhthing is done, make a call to the exit function
 exit()
-
 
