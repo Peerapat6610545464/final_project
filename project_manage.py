@@ -124,15 +124,15 @@ def add_line(file_, value):
         print(key)
         file.insert(key)
 
-
 # based on the return value for login, activate the code that performs
 # activities according to the role defined for that person_id
 while True:
     if val[1] == 'admin':
         print("---------------------")
-        print("1.Add project")
-        print("2.Delete project")
-        choice = input("Task number(q to quit): ")
+        print("1.Add any file information")
+        print("2.Delete any file information")
+        print("3.See any file information")
+        choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
         if choice == "1":
@@ -159,13 +159,32 @@ while True:
                 Status = input("Status: ")
                 add_line(file_add,
                          [ID, Title, Lead, Member1, Member2, Advisor, Status])
-            print("File has been added")
+            print("File has been added!!")
         if choice == "2":
             file_delete = input("File: ")
             file_delete_number = int(input("Line: "))
             delete_line(file_delete, file_delete_number)
+        if choice == "3":
+            file_to_see = input("File: ")
+            file = db.search(file_to_see).table
+            print(f"{file_to_see} in formation")
+            for i in file:
+                print(i)
     if val[1] == 'student':
-        pass
+        file = db.search("member_pending_request_table")
+        print("---------------------")
+        print("1.See and accepted or deny member pending request: ")
+        print("2.Become a lead")
+        choice = input("Task number(q to update or quit): ")
+        if choice == "q":
+            break
+        if choice == "1":
+            print("member pending request:")
+            print(file)
+        if choice == "2":
+            file_ = db.search("login")
+            file_.update(val[0], 'role', 'lead')
+            print("You have been promoted to lead!!")
     if val[1] == 'member':
         pass
     if val[1] == 'lead':

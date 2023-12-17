@@ -21,7 +21,6 @@
   - Send accept or deny response
   - See details of all the project
 * logged in as an admin
-
   - Change status (student, member, lead)
   - Send accept or deny response (for projects eventually serving as an advisor)
   - See and modify all project information

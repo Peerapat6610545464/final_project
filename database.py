@@ -50,7 +50,7 @@ class Table:
     def update(self, user_id, key, value):
         for i in self.table:
             if i["ID"] == user_id:
-                self.table[key] = value
+                i[key] = value
 
     def join(self, other_table, common_key):
         joined_table = Table(
