@@ -14,13 +14,12 @@ def initializing():
     project = read.csv_reader("project.csv")
     advisor_pending_request = read.csv_reader("advisor_pending_request.csv")
     member_pending_request = read.csv_reader("member_pending_request.csv")
-
     person_table = Table("person", person)
     login_table = Table("login", login_)
     project_table = Table("project", project)
     advisor_pending_request_table = Table("advisor_pending_request",
                                           advisor_pending_request)
-    member_pending_request_table = Table("member_pending_request_table",
+    member_pending_request_table = Table("member_pending_request",
                                          member_pending_request)
     db.insert(person_table)
     db.insert(login_table)
@@ -53,17 +52,29 @@ def exit():
     with open('persons.csv', 'w', newline='') as file__:
         file__ = csv.writer(file__)
         file__.writerow(['ID', 'first', 'last', 'type'])
-        for index in db.search('person').table:
-            file__.writerow(index.values())
+        for i in db.search('person').table:
+            file__.writerow(i.values())
 
     with open('project.csv', 'w', newline='') as file__:
         file__ = csv.writer(file__)
         file__.writerow(['ProjectID', 'Title', 'Lead', 'Member1'
                             , 'Member2', 'Advisor', 'Status'])
-        for index in db.search('project').table:
-            file__.writerow(index.values())
+        for i in db.search('project').table:
+            file__.writerow(i.values())
 
+    with open('advisor_pending_request_table.csv', 'w', newline='') as file__:
+        file__ = csv.writer(file__)
+        file__.writerow(['ProjectID', 'to_be_advisor',
+                         'Response', 'Response_date'])
+        for i in db.search('project').table:
+            file__.writerow(i.values())
 
+    with open('member_pending_request_table.csv', 'w', newline='') as file__:
+        file__ = csv.writer(file__)
+        file__.writerow(['ProjectID', 'to_be_member',
+                         'Response', 'Response_date'])
+        for i in db.search('project').table:
+            file__.writerow(i.values())
 class Log_in:
 
     def __init__(self):
@@ -104,16 +115,26 @@ class Log_in:
 
 # make calls to the initializing and login functions defined above
 
+
 initializing()
 
 value = Log_in()
 val = value.log()
+
+# file1 = db.search('login').table
+# file2 = db.search('person').table
+file3 = db.search('advisor_pending_request').table
+
 
 
 def delete_line(file_delete_, file_delete_number_):
     file = db.search(f'{file_delete_}').table
     print(file)
     del file[file_delete_number_ - 1]
+    file2 = db.search(f'{file_delete_}').table
+    print(file2)
+
+delete_line("advisor_pending_request", 1)
 
 
 def add_line(file_, value):
@@ -181,7 +202,7 @@ while True:
         if choice == "2":
             file_delete = input("File: ")
             file_delete_number = int(input("Line: "))
-            delete_line(file_delete, file_delete_number-1)
+            delete_line(file_delete, file_delete_number - 1)
         if choice == "3":
             file_to_see = input("File: ")
             file = db.search(file_to_see).table
@@ -222,10 +243,10 @@ while True:
                     count += 1
                     add_line("member_pending_request",
                              [answer, value.username, "accept",
-                              datetime.date.today()])
+                              datetime.date.today])
                     print(add_line("member_pending_request",
                                    [answer, value.username, "accept",
-                                    datetime.date.today()]))
+                                    datetime.date.today]))
                     print(f"you have accepted to be member of group {answer}")
         if choice == "3":
             file_.update(val[0], 'role', 'lead')
