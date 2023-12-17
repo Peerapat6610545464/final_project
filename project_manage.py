@@ -66,14 +66,14 @@ def exit():
 
     with open('advisor_pending_request.csv', 'w', newline='') as file4:
         file__ = csv.writer(file4)
-        file__.writerow(['ID', 'to_be_advisor',
+        file__.writerow(['ID', 'title' 'to_be_advisor_name',
                          'Response', 'Response_date'])
         for i in db.search('advisor_pending_request').table:
             file__.writerow(i.values())
 
     with open('member_pending_request.csv', 'w', newline='') as file5:
         file__ = csv.writer(file5)
-        file__.writerow(['ID', 'title', 'name',
+        file__.writerow(['ID', 'title', 'to_be_name_name',
                          'response', 'response_date'])
         for i in db.search('member_pending_request').table:
             file__.writerow(i.values())
@@ -155,9 +155,12 @@ def add_line(file_, value):
                "status": value[6], "project_information": value[7]}
         file.insert(key)
     if file_ == "member_pending_request":
-        key = {'projectID': value[0], 'title': value[1], 'name': value[2],
-               'response': value[3], 'response_date': value[4], }
-        print(key)
+        key = {'projectID': value[0], 'member': value[1],
+               'response': value[2], 'response_date': value[3], }
+        file.insert(key)
+    if file_ == "advisor_pending_request":
+        key = {'projectID': value[0], 'member': value[1],
+               'response': value[2], 'response_date': value[3], }
         file.insert(key)
 
     def answer_request(requestID):
@@ -207,7 +210,15 @@ while True:
                 title = input("title: ")
                 Name = input("Name: ")
                 Response = "waiting"
-                Response_date = ""
+                Response_date = "-"
+                add_line(file_add, [ProjectID, Name,
+                                    Response, Response, Response_date, ])
+            if file_add == "advisor_pending_request":
+                ProjectID = input("ProjectID: ")
+                title = input("title: ")
+                Name = input("Name: ")
+                Response = "waiting"
+                Response_date = "-"
                 add_line(file_add, [ProjectID, Name,
                                     Response, Response, Response_date, ])
             print("File has been added!!")
@@ -249,13 +260,16 @@ while True:
             answer = input("accept request ID or deny: ")
             count = 1
             for i in file.table:
-                if i['projectID'] == answer:
-                    count += 1
-                    delete_line("member_pending_request", count)
-                    add_line("member_pending_request",
-                             [answer, value.username, "accept",
-                              datetime.datetime.today()])
-                    print(f"you have accepted to be member of group {answer}")
+                try:
+                    if i['ID'] == answer:
+                        count += 1
+                        delete_line("member_pending_request", count)
+                        add_line("member_pending_request",
+                                 [answer, value.username, "accept",
+                                  datetime.datetime.today()])
+                        print(f"you have accepted to be member of group {answer}")
+                except:
+                    pass
         if choice == "3":
             file_.update(val[0], 'role', 'lead')
             print("You have been promoted to lead!!")
@@ -329,18 +343,29 @@ while True:
             print("Create member request:")
             file_add = "member_pending_request"
             ProjectID = input("ProjectID: ")
-            title = input("title: ")
             Name = input("Name: ")
             Response = "waiting"
-            Response_date = ""
+            Response_date = "-"
             add_line(file_add, [ProjectID, Name,
                                 Response, Response, Response_date, ])
         if choice == "5":
-            pass
+            print("Create advisor request:")
+            file_add = "advisor_pending_request"
+            ProjectID = input("ProjectID: ")
+            Name = input("Name: ")
+            Response = "waiting"
+            Response_date = "-"
+            add_line(file_add, [ProjectID, Name,
+                                Response, Response, Response_date, ])
     if val[1] == 'faculty':
-        pass
+        print("---------------------")
+        print("1.See project status: ")
+        print("2.accepted or deny member pending request: ")
     if val[1] == 'advisor':
-        pass
+        print("---------------------")
+        print("1.See project status: ")
+        print("2.See pending request: ")
+        print("3.send evaluate request: ")
 
 # if val[1] = 'admin':
 # see and do admin related activities
