@@ -281,6 +281,16 @@ while True:
                 if i['member1'] == value.username \
                         or i['member2'] == value.username:
                     file.update(i['ID'], "project_information", info)
+        if choice == "3":
+            file1 = db.search("member_pending_request").table
+            file2 = db.search("advisor_pending_request").table
+            print("member_pending_request: ")
+            for i in file1:
+                print(i)
+            print("---------------------")
+            print("advisor_pending_request: ")
+            for i in file2:
+                print(i)
     if val[1] == 'lead':
         pass
     if val[1] == 'faculty':
