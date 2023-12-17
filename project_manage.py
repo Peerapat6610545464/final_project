@@ -43,34 +43,34 @@ def initializing():
 
 
 def exit():
-    with open('login.csv', 'w', newline='') as file__:
-        file__ = csv.writer(file__)
+    with open('login.csv', 'w', newline='') as file1:
+        file__ = csv.writer(file1)
         file__.writerow(['ID', 'username', 'password', 'role'])
         for i in db.search('login').table:
             file__.writerow(i.values())
 
-    with open('persons.csv', 'w', newline='') as file__:
-        file__ = csv.writer(file__)
+    with open('persons.csv', 'w', newline='') as file2:
+        file__ = csv.writer(file2)
         file__.writerow(['ID', 'first', 'last', 'type'])
         for i in db.search('person').table:
             file__.writerow(i.values())
 
-    with open('project.csv', 'w', newline='') as file__:
-        file__ = csv.writer(file__)
+    with open('project.csv', 'w', newline='') as file3:
+        file__ = csv.writer(file3)
         file__.writerow(['ProjectID', 'Title', 'Lead', 'Member1'
                             , 'Member2', 'Advisor', 'Status'])
         for i in db.search('project').table:
             file__.writerow(i.values())
 
-    with open('advisor_pending_request.csv', 'w', newline='') as file__:
-        file__ = csv.writer(file__)
+    with open('advisor_pending_request.csv', 'w', newline='') as file4:
+        file__ = csv.writer(file4)
         file__.writerow(['ProjectID', 'to_be_advisor',
                          'Response', 'Response_date'])
         for i in db.search('project').table:
             file__.writerow(i.values())
 
-    with open('member_pending_request.csv', 'w', newline='') as file__:
-        file__ = csv.writer(file__)
+    with open('member_pending_request.csv', 'w', newline='') as file5:
+        file__ = csv.writer(file5)
         file__.writerow(['ProjectID', 'to_be_member',
                          'Response', 'Response_date'])
         for i in db.search('project').table:
