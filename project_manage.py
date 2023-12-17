@@ -62,19 +62,21 @@ def exit():
         for i in db.search('project').table:
             file__.writerow(i.values())
 
-    with open('advisor_pending_request_table.csv', 'w', newline='') as file__:
+    with open('advisor_pending_request.csv', 'w', newline='') as file__:
         file__ = csv.writer(file__)
         file__.writerow(['ProjectID', 'to_be_advisor',
                          'Response', 'Response_date'])
         for i in db.search('project').table:
             file__.writerow(i.values())
 
-    with open('member_pending_request_table.csv', 'w', newline='') as file__:
+    with open('member_pending_request.csv', 'w', newline='') as file__:
         file__ = csv.writer(file__)
         file__.writerow(['ProjectID', 'to_be_member',
                          'Response', 'Response_date'])
         for i in db.search('project').table:
             file__.writerow(i.values())
+
+
 class Log_in:
 
     def __init__(self):
@@ -121,20 +123,11 @@ initializing()
 value = Log_in()
 val = value.log()
 
-# file1 = db.search('login').table
-# file2 = db.search('person').table
-file3 = db.search('advisor_pending_request').table
-
-
 
 def delete_line(file_delete_, file_delete_number_):
     file = db.search(f'{file_delete_}').table
+    del file[file_delete_number_ - 2]
     print(file)
-    del file[file_delete_number_ - 1]
-    file2 = db.search(f'{file_delete_}').table
-    print(file2)
-
-delete_line("advisor_pending_request", 1)
 
 
 def add_line(file_, value):
@@ -202,7 +195,7 @@ while True:
         if choice == "2":
             file_delete = input("File: ")
             file_delete_number = int(input("Line: "))
-            delete_line(file_delete, file_delete_number - 1)
+            delete_line(file_delete, file_delete_number)
         if choice == "3":
             file_to_see = input("File: ")
             file = db.search(file_to_see).table
@@ -219,7 +212,7 @@ while True:
             print(f"{ID} {role} has been change to {role2}!!")
 
     if val[1] == 'student':
-        file = db.search("member_pending_request_table")
+        file = db.search("member_pending_request")
         file_ = db.search("login")
         print("---------------------")
         print("1.See member pending request: ")
@@ -239,14 +232,11 @@ while True:
             count = 1
             for i in file.table:
                 if i['ProjectID'] == answer:
-                    delete_line("member_pending_request_table", count)
                     count += 1
-                    add_line("member_pending_request",
-                             [answer, value.username, "accept",
-                              datetime.date.today])
-                    print(add_line("member_pending_request",
-                                   [answer, value.username, "accept",
-                                    datetime.date.today]))
+                    delete_line("member_pending_request", count)
+                    # add_line("member_pending_request",
+                    #          [answer, value.username, "accept",
+                    #           datetime.date.today])
                     print(f"you have accepted to be member of group {answer}")
         if choice == "3":
             file_.update(val[0], 'role', 'lead')
