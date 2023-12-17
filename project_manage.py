@@ -73,7 +73,7 @@ def exit():
 
     with open('member_pending_request.csv', 'w', newline='') as file5:
         file__ = csv.writer(file5)
-        file__.writerow(['ID', 'to_be_member',
+        file__.writerow(['ID', 'title', 'name',
                          'response', 'response_date'])
         for i in db.search('member_pending_request').table:
             file__.writerow(i.values())
@@ -155,8 +155,8 @@ def add_line(file_, value):
                "status": value[6], "project_information": value[7]}
         file.insert(key)
     if file_ == "member_pending_request":
-        key = {'projectID': value[0], 'to_be_member': value[1],
-               'response': value[2], 'response_date': value[3], }
+        key = {'projectID': value[0], 'title': value[1], 'name': value[2],
+               'response': value[3], 'response_date': value[4], }
         print(key)
         file.insert(key)
 
@@ -204,12 +204,12 @@ while True:
                           member2, advisor, status, info])
             if file_add == "member_pending_request":
                 ProjectID = input("ProjectID: ")
-                Title = input("Title: ")
-                to_be_member = input("to_be_member: ")
-                Response = input("Response: ")
-                Response_date = input("Response_date: ")
-                add_line(file_add, [ProjectID, Title,
-                                    to_be_member, Response, Response_date, ])
+                title = input("title: ")
+                Name = input("Name: ")
+                Response = "waiting"
+                Response_date = ""
+                add_line(file_add, [ProjectID, Name,
+                                    Response, Response, Response_date, ])
             print("File has been added!!")
         if choice == "2":
             file_delete = input("File: ")
@@ -292,7 +292,51 @@ while True:
             for i in file2:
                 print(i)
     if val[1] == 'lead':
-        pass
+        file = db.search("project")
+        print("---------------------")
+        print("1.See project status: ")
+        print("2.modify project information: ")
+        print("3.See who has responded to the requests sent out")
+        print("4.Send out requests to potential members")
+        print("5.Send out requests to a potential advisor")
+        choice = input("Task number(q to update or quit): ")
+        if choice == "q":
+            break
+        if choice == "1":
+            count = 1
+            for i in file.table:
+                if i['member1'] == value.username \
+                        or i['member2'] == value.username:
+                    print(f"{count}. {i}")
+                    count += 1
+        if choice == "2":
+            info = input("Project information ID: ")
+            for i in file.table:
+                if i['member1'] == value.username \
+                        or i['member2'] == value.username:
+                    file.update(i['ID'], "project_information", info)
+        if choice == "3":
+            file1 = db.search("member_pending_request").table
+            file2 = db.search("advisor_pending_request").table
+            print("member_pending_request: ")
+            for i in file1:
+                print(i)
+            print("---------------------")
+            print("advisor_pending_request: ")
+            for i in file2:
+                print(i)
+        if choice == "4":
+            print("Create member request:")
+            file_add = "member_pending_request"
+            ProjectID = input("ProjectID: ")
+            title = input("title: ")
+            Name = input("Name: ")
+            Response = "waiting"
+            Response_date = ""
+            add_line(file_add, [ProjectID, Name,
+                                Response, Response, Response_date, ])
+        if choice == "5":
+            pass
     if val[1] == 'faculty':
         pass
     if val[1] == 'advisor':
