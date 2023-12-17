@@ -27,3 +27,4 @@ ID,username,password,role
 dsa,a,1,d
 1,a,b,admin
 3,d,e,student
+4,r,w,member

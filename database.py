@@ -47,9 +47,9 @@ class Table:
     def insert(self, other):
         self.table += [other]
 
-    def update(self, user_id, key, value, key2="ID"):
+    def update(self, user_id, key, value, ):
         for i in self.table:
-            if i[key2] == user_id:
+            if i['ID'] == user_id:
                 i[key] = value
 
     def join(self, other_table, common_key):
