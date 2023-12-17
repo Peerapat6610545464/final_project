@@ -5,19 +5,19 @@ import copy
 
 
 class Read:
-    def __init__(self, name):
-        self.csv = []
-        self.name = name
-
-    def read(self):
-        __location__ = os.path.realpath(
+    def __init__(self):
+        self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-        with open(os.path.join(__location__, self.name)) as f:
+    def csv_reader(self, name):
+        list_ = []
+
+        with open(os.path.join(self.__location__, name)) as f:
             rows = csv.DictReader(f)
             for r in rows:
-                self.csv.append(dict(r))
-        return self.csv
+                list_.append(dict(r))
+        return list_
+
 
 # add in code for a Database class
 class DB:
@@ -27,10 +27,10 @@ class DB:
     def insert(self, table):
         self.database.append(table)
 
-    def search(self, key):
-        for i in self.database:
-            if i.key == key:
-                return i
+    def search(self, table_name):
+        for table in self.database:
+            if table.table_name == table_name:
+                return table
         return None
 
     def database(self):

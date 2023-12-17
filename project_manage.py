@@ -2,34 +2,30 @@
 from database import Read, DB, Table
 import csv
 
-
 # define a funcion called initializing
+db = DB()
+read = Read()
+
 
 def initializing():
-    person = Read("persons.csv")
-    login_ = Read("login.csv")
-    advisor_pending_request = Read("advisor_pending_request.csv")
-    member_pending_request = Read("member_pending_request.csv")
-    project_table = Read("project_table.csv")
+    login_ = read.csv_reader("login.csv")
+    person = read.csv_reader("persons.csv")
+    project = read.csv_reader("project.csv")
+    advisor_pending_request = read.csv_reader("advisor_pending_request.csv")
+    member_pending_request = read.csv_reader("member_pending_request.csv")
 
-    Read.read(person)
-    Read.read(login_)
-    Read.read(advisor_pending_request)
-    Read.read(member_pending_request)
-    person_table = Table("Person_table", person.csv)
-    login_table = Table("Login_table", login_.csv)
+    person_table = Table("person", person)
+    login_table = Table("login", login_)
+    project_table = Table("project", project)
     advisor_pending_request_table = Table("advisor_pending_request",
-                                          advisor_pending_request.csv)
+                                          advisor_pending_request)
     member_pending_request_table = Table("member_pending_request_table",
-                                         member_pending_request.csv)
-    db_ = DB()
-    db_.insert(person_table)
-    db_.insert(login_table)
-    db_.insert(project_table)
-    db_.insert(advisor_pending_request_table)
-    db_.insert(member_pending_request_table)
-    with open('advisor_pending_request.csv', 'w') as csv_file:
-        csv_write = csv.writer(csv_file, delimiter = ',')
+                                         member_pending_request)
+    db.insert(person_table)
+    db.insert(login_table)
+    db.insert(project_table)
+    db.insert(advisor_pending_request_table)
+    db.insert(member_pending_request_table)
 
 
 # here are things to do in this function:
@@ -48,19 +44,37 @@ def initializing():
 
 def login():
     username = input("Username: ")
-    passworld = input("Password: ")
-    with
+    password = input("Password: ")
+    login_1 = db.search('login')
+    for i in login_1.table:
+        if username == i['username'] and password == i['password']:
+            return [i['ID'], i['role']]
+
+    # print(login_1.table)
 
 
 # here are things to do in this function:
 # add code that performs a login task
 # ask a user for a username and password
 # returns [ID, role] if valid, otherwise returning None
+def convert_csv(name, data):
+    # file = open(f"{name}.csv", 'w')
+    # writer = csv.writer(file)
+    # for i in data[0].keys():
+    #     writer.writerow(i)
+    # for i in data.values():
+    #
+    #     writer.writerow(i)
+    # file.close()
+    pass
+
 
 # define a function called exit
 def exit():
+    # for i in db.database:
+    #     table_data = db.search(i.table_name)
+    #     convert_csv(i.table_name, table_data.table)
     pass
-
 
 # here are things to do in this function:
 # write out all the tables that have been modified to the corresponding csv files
@@ -71,7 +85,7 @@ def exit():
 
 # make calls to the initializing and login functions defined above
 
-db = initializing()
+initializing()
 val = login()
 
 # based on the return value for login, activate the code that performs activities according to the role defined for that person_id
@@ -91,4 +105,3 @@ val = login()
 
 # once everyhthing is done, make a call to the exit function
 exit()
-
