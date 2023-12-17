@@ -100,16 +100,9 @@ val = login()
 
 
 def delete_line(file_delete_, file_delete_number_):
-    with open(f'{file_delete_}.csv') as file_:
-        line = file_.readline()
-        print(line)
-    # if file_delete_number_ <= len(line):
-    #     del line[int(file_delete_number_) - 1]
-    #     with open(f'{file_delete_}.csv', 'w', newline='') as f:
-    #         for i in line:
-    #             file_.write(i)
-    # else:
-    #     print(f"line {file_delete_number_} not in file")
+    file = db.search(f'{file_delete_}').table
+    print(file)
+    del file[file_delete_number_ - 1]
 
 
 def add_line(file_, value):
@@ -152,8 +145,8 @@ while True:
                 add_line(file_add, [ID, first, last, type_])
             if file_add == "login":
                 ID = input("ID: ")
-                first = input("First name: ")
-                last = input("Last name: ")
+                first = input("username: ")
+                last = input("passworde: ")
                 type_ = input("Role: ")
                 add_line(file_add, [ID, first, last, type_])
             if file_add == "project":
