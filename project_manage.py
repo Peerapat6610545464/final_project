@@ -66,14 +66,14 @@ def exit():
         file__ = csv.writer(file4)
         file__.writerow(['ProjectID', 'to_be_advisor',
                          'Response', 'Response_date'])
-        for i in db.search('project').table:
+        for i in db.search('advisor_pending_request').table:
             file__.writerow(i.values())
 
     with open('member_pending_request.csv', 'w', newline='') as file5:
         file__ = csv.writer(file5)
         file__.writerow(['ProjectID', 'to_be_member',
                          'Response', 'Response_date'])
-        for i in db.search('project').table:
+        for i in db.search('member_pending_request').table:
             file__.writerow(i.values())
 
 
@@ -126,6 +126,7 @@ val = value.log()
 
 def delete_line(file_delete_, file_delete_number_):
     file = db.search(f'{file_delete_}').table
+    print(file)
     del file[file_delete_number_ - 2]
     print(file)
 
