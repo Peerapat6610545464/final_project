@@ -123,7 +123,6 @@ initializing()
 value = Log_in()
 val = value.log()
 
-
 def delete_line(file_delete_, file_delete_number_):
     file = db.search(f'{file_delete_}').table
     print(file)
@@ -133,6 +132,7 @@ def delete_line(file_delete_, file_delete_number_):
 
 def add_line(file_, value):
     file = db.search(f'{file_}')
+    print(file)
     if file_ == "login":
         key = {'ID': value[0], 'username': value[1], 'password': value[2],
                'role': value[3]}
@@ -147,9 +147,10 @@ def add_line(file_, value):
                'Member2': value[4], "Advisor": value[5],
                "Status": value[6]}
         file.insert(key)
-    if file_ == "member_pending_request_table":
+    if file_ == "member_pending_request":
         key = {'ProjectID': value[0], 'to_be_member': value[1],
                'Response': value[2], 'Response_date': value[3], }
+        print(key)
         file.insert(key)
 
     def answer_request(requestID, status=None):
@@ -192,6 +193,14 @@ while True:
                 Status = input("Status: ")
                 add_line(file_add,
                          [ID, Title, Lead, Member1, Member2, Advisor, Status])
+            if file_add == "member_pending_request":
+                ProjectID = input("ProjectID: ")
+                Title = input("Title: ")
+                to_be_member = input("to_be_member: ")
+                Response = input("Response: ")
+                Response_date = input("Response_date: ")
+                add_line(file_add, [ProjectID, Title,
+                                    to_be_member, Response, Response_date, ])
             print("File has been added!!")
         if choice == "2":
             file_delete = input("File: ")
@@ -231,13 +240,14 @@ while True:
         if choice == "2":
             answer = input("accept request ID or deny: ")
             count = 1
+
             for i in file.table:
                 if i['ProjectID'] == answer:
                     count += 1
                     delete_line("member_pending_request", count)
-                    # add_line("member_pending_request",
-                    #          [answer, value.username, "accept",
-                    #           datetime.date.today])
+                    add_line("member_pending_request",
+                             [answer, value.username, "accept",
+                              datetime.datetime.today()])
                     print(f"you have accepted to be member of group {answer}")
         if choice == "3":
             file_.update(val[0], 'role', 'lead')
