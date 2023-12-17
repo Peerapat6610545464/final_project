@@ -57,28 +57,36 @@ def login():
 # add code that performs a login task
 # ask a user for a username and password
 # returns [ID, role] if valid, otherwise returning None
-def convert_csv(name, data):
-    # file = open(f"{name}.csv", 'w')
-    # writer = csv.writer(file)
-    # for i in data[0].keys():
-    #     writer.writerow(i)
-    # for i in data.values():
-    #
-    #     writer.writerow(i)
-    # file.close()
-    pass
 
 
 # define a function called exit
 def exit():
-    # for i in db.database:
-    #     table_data = db.search(i.table_name)
-    #     convert_csv(i.table_name, table_data.table)
-    pass
+    with open('login.csv', 'w', newline='') as file:
+        file = csv.writer(file)
+        file.writerow(['ID', 'username', 'password', 'role'])
+        for i in db.search('login').table:
+            file.writerow(i.values())
 
-# here are things to do in this function:
-# write out all the tables that have been modified to the corresponding csv files
-# By now, you know how to read in a csv file and transform it into a list of dictionaries. For this project, you also need to know how to do the reverse, i.e., writing out to a csv file given a list of dictionaries. See the link below for a tutorial on how to do this:
+    with open('persons.csv', 'w', newline='') as file:
+        file = csv.writer(file)
+        file.writerow(['ID', 'first', 'last', 'type'])
+        for i in db.search('person').table:
+            file.writerow(i.values())
+
+    with open('project.csv', 'w', newline='') as file:
+        file = csv.writer(file)
+        file.writerow(['ProjectID', 'Title', 'Lead', 'Member1'
+                          , 'Member2', 'Advisor', 'Status'])
+        for i in db.search('project').table:
+            file.writerow(i.values())
+
+
+# here are things to do in this function: write out all the tables that have
+# been modified to the corresponding csv files By now, you know how to read
+# in a csv file and transform it into a list of dictionaries. For this
+# project, you also need to know how to do the reverse, i.e., writing out to
+# a csv file given a list of dictionaries. See the link below for a tutorial
+# on how to do this:
 
 # https://www.pythonforbeginners.com/basics/list-of-dictionaries-to-csv-in-python
 
@@ -88,7 +96,42 @@ def exit():
 initializing()
 val = login()
 
-# based on the return value for login, activate the code that performs activities according to the role defined for that person_id
+
+def remove_row(data, row):
+    file = open(f"{data} , w")
+    del file[row - 1]
+    file.close()
+
+
+def add_project(file_, data):
+    with open(f'{file_}', 'w', newline='') as file:
+        file = csv.writer(file)
+        file.writerow(data)
+
+
+# based on the return value for login, activate the code that performs
+# activities according to the role defined for that person_id
+if val[1] == 'admin':
+    print("---------------------")
+    print("1.Add project")
+    print("2.Delete project")
+    choice = input("Task number: ")
+    if choice == 1:
+        file, data = input("Select file to add row and data too add").split()
+        add_project(file, data)
+    if choice == 2:
+        file, row = input("Select file and row to delete").split()
+        remove_row(file, row)
+if val[1] == 'student':
+    pass
+if val[1] == 'member':
+    pass
+if val[1] == 'lead':
+    pass
+if val[1] == 'faculty':
+    pass
+if val[1] == 'advisor':
+    pass
 
 # if val[1] = 'admin':
 # see and do admin related activities
