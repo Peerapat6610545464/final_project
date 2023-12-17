@@ -1,6 +1,7 @@
 # import database module
 from database import Read, DB, Table
 import csv
+import datetime
 
 # define a funcion called initializing
 db = DB()
@@ -32,7 +33,6 @@ def initializing():
 
 # create an object to read all csv files that will serve as a persistent state for this program
 
-
 # create all the corresponding tables for those csv files
 
 # see the guide how many tables are needed
@@ -42,45 +42,54 @@ def initializing():
 
 # define a funcion called login
 
-def login():
-    print("-----LOGIN TABLE-----")
-    username = input("Username: ")
-    password = input("Password: ")
-    login_1 = db.search('login')
-    for i in login_1.table:
-        if username == i['username'] and password == i['password']:
-            print(f"Your log in as {i['role']}")
-            print("----------------------")
-            return [i['ID'], i['role']]
-    # print(login_1.table)
 
-
-# here are things to do in this function:
-# add code that performs a login task
-# ask a user for a username and password
-# returns [ID, role] if valid, otherwise returning None
-
-
-# define a function called exit
 def exit():
-    with open('login.csv', 'w', newline='') as file:
-        file = csv.writer(file)
-        file.writerow(['ID', 'username', 'password', 'role'])
+    with open('login.csv', 'w', newline='') as file__:
+        file__ = csv.writer(file__)
+        file__.writerow(['ID', 'username', 'password', 'role'])
         for i in db.search('login').table:
-            file.writerow(i.values())
+            file__.writerow(i.values())
 
-    with open('persons.csv', 'w', newline='') as file:
-        file = csv.writer(file)
-        file.writerow(['ID', 'first', 'last', 'type'])
-        for i in db.search('person').table:
-            file.writerow(i.values())
+    with open('persons.csv', 'w', newline='') as file__:
+        file__ = csv.writer(file__)
+        file__.writerow(['ID', 'first', 'last', 'type'])
+        for index in db.search('person').table:
+            file__.writerow(index.values())
 
-    with open('project.csv', 'w', newline='') as file:
-        file = csv.writer(file)
-        file.writerow(['ProjectID', 'Title', 'Lead', 'Member1'
-                          , 'Member2', 'Advisor', 'Status'])
-        for i in db.search('project').table:
-            file.writerow(i.values())
+    with open('project.csv', 'w', newline='') as file__:
+        file__ = csv.writer(file__)
+        file__.writerow(['ProjectID', 'Title', 'Lead', 'Member1'
+                            , 'Member2', 'Advisor', 'Status'])
+        for index in db.search('project').table:
+            file__.writerow(index.values())
+
+
+class Log_in:
+
+    def __init__(self):
+        print("-----LOGIN TABLE-----")
+        self._username = input("Username: ")
+        self._password = input("Password: ")
+
+    def log(self):
+        login_1 = db.search('login')
+        for i in login_1.table:
+            if self._username == i['username'] and \
+                    self._password == i['password']:
+                print(f"Your log in as {i['role']}")
+                return [i['ID'], i['role']]
+        # print(login_1.table)
+
+    @property
+    def username(self):
+        return self._username
+
+    # here are things to do in this function:
+    # add code that performs a login task
+    # ask a user for a username and password
+    # returns [ID, role] if valid, otherwise returning None
+
+    # define a function called exit
 
 
 # here are things to do in this function: write out all the tables that have
@@ -96,7 +105,9 @@ def exit():
 # make calls to the initializing and login functions defined above
 
 initializing()
-val = login()
+
+value = Log_in()
+val = value.log()
 
 
 def delete_line(file_delete_, file_delete_number_):
@@ -115,14 +126,20 @@ def add_line(file_, value):
         key = {'ID': value[0], 'first': value[1],
                'last': value[2], 'type': value[4]}
         file.insert(key)
-        print(key)
     if file_ == "project":
         key = {'ProjectID': value[0], 'Title': value[1],
                'Lead': value[2], 'Member1': value[3],
                'Member2': value[4], "Advisor": value[5],
                "Status": value[6]}
-        print(key)
         file.insert(key)
+    if file_ == "member_pending_request_table":
+        key = {'ProjectID': value[0], 'to_be_member': value[1],
+               'Response': value[2], 'Response_date': value[3], }
+        file.insert(key)
+
+    def answer_request(requestID, status=None):
+        pass
+
 
 # based on the return value for login, activate the code that performs
 # activities according to the role defined for that person_id
@@ -132,6 +149,7 @@ while True:
         print("1.Add any file information")
         print("2.Delete any file information")
         print("3.See any file information")
+        print("4.Update status")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
@@ -163,26 +181,53 @@ while True:
         if choice == "2":
             file_delete = input("File: ")
             file_delete_number = int(input("Line: "))
-            delete_line(file_delete, file_delete_number)
+            delete_line(file_delete, file_delete_number-1)
         if choice == "3":
             file_to_see = input("File: ")
             file = db.search(file_to_see).table
             print(f"{file_to_see} in formation")
             for i in file:
                 print(i)
+        if choice == "4":
+            file_ = input("File to change status")
+            ID = input("ID to change status: ")
+            role = input("Status to change")
+            role2 = input(f"change {role} to: ")
+            file = db.search(f"{file_}")
+            file.update(ID, role, role2)
+            print(f"{ID} {role} has been change to {role2}!!")
+
     if val[1] == 'student':
         file = db.search("member_pending_request_table")
+        file_ = db.search("login")
         print("---------------------")
-        print("1.See and accepted or deny member pending request: ")
-        print("2.Become a lead")
+        print("1.See member pending request: ")
+        print("2.accepted or deny member pending request: ")
+        print("3.Become a lead")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
         if choice == "1":
             print("member pending request:")
-            print(file)
+            count = 1
+            for i in file.table:
+                print(f"{count}. {i}")
+                count += 1
         if choice == "2":
-            file_ = db.search("login")
+            answer = input("accept request ID or deny: ")
+            count = 1
+            for i in file.table:
+                if i['ProjectID'] == answer:
+                    delete_line("member_pending_request_table", count)
+                    count += 1
+                    add_line("member_pending_request",
+                             [answer, value.username, "accept",
+                              datetime.date.today()])
+                    print(add_line("member_pending_request",
+                                   [answer, value.username, "accept",
+                                    datetime.date.today()]))
+                    print(f"you have accepted to be member of group {answer}")
+        if choice == "3":
             file_.update(val[0], 'role', 'lead')
             print("You have been promoted to lead!!")
     if val[1] == 'member':
