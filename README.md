@@ -78,9 +78,9 @@
 | student | See member pending request                     | input                  | student | 100%       |
 | student | accepted or deny member pending request        | add_line, delete_line  | student | 100%       |
 | student | Become a lead                                  | add_line, delete_line  | student | 100%       |
-| member  | See project status                             | search                 | student | 100%       |
-| member  | See and Modified project information           | add_line, delete_line  | student | 100%       |
-| member  | See who has responded to the requests sent out | search                 | student | 100%       |
+| member  | See project status                             | search                 | member  | 100%       |
+| member  | See and Modified project information           | add_line, delete_line  | member  | 100%       |
+| member  | See who has responded to the requests sent out | search                 | member  | 100%       |
 | lead    | See project status                             | search                 | lead    | 100%       |
 | lead    | modify project information                     | add_line,d delete_line | lead    | 100%       |
 | lead    | See who has responded to the requests sent out | search                 | lead    | 100%       |
