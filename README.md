@@ -2,7 +2,7 @@
 * how to use this program
   - login with username and password
   - the program will show you what option is available
-  - example: if the  program ask for file write "file" do not wire "file.csv"
+  - example: if the  program ask for file write "file_name" do not wire "file_name.csv"
   - example2: if the program ask for "accept request ID or deny: " if you want 
     to accept write ID of the project or userid foe deny just write "deny"
   - write q to quit
