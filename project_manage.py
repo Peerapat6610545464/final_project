@@ -15,7 +15,7 @@ FILE_LOGIN = db.search("login")
 FILE_PROJECT = db.search("project")
 FILE_ADVISOR = db.search("advisor_pending_request")
 FILE_MEMBER = db.search("member_pending_request")
-
+FILE_EVA = db.search("evaluation")
 
 def initializing():
     """to initializing the program and create an object to read all csv files
@@ -294,6 +294,12 @@ while True:
                     print(
                         f"you have accepted to be "
                         f"member of group {answer}")
+                elif answer == "deny":
+                    COUNT += 1
+                    delete_line("member_pending_request", COUNT)
+                    add_line("member_pending_request",
+                             [answer, value.username, "deny",
+                              datetime.datetime.today()])
         if choice == "3":
             FILE_LOGIN.update(val[0], 'role', 'lead')
             print("You have been promoted to lead!!")
@@ -407,11 +413,18 @@ while True:
                     print(
                         f"you have accepted to be "
                         f"advisor of group {answer}")
+                elif answer == "deny":
+                    COUNT += 1
+                    delete_line("advisor_pending_request", COUNT)
+                    add_line("advisor_pending_request",
+                             [answer, value.username, "deny",
+                              datetime.datetime.today()])
     if val[1] == 'advisor':
         print("---------------------")
         print("1.See project status: ")
         print("2.See pending request: ")
         print("3.Send out requests to a potential evaluation ")
+        print("4.accept or deny evaluation request")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
@@ -428,6 +441,24 @@ while True:
             Name = input("Name: ")
             add_line("evaluation", [projectID, Name,
                                     RESPONSE, RESPONSE, RESPONSE_DATE, ])
+
+        if choice == "4":
+            answer = input("accept request ID or deny: ")
+            COUNT = 1
+            for i in FILE_EVA.table:
+                if i['ID'] == answer:
+                    COUNT += 1
+                    delete_line("evaluation", COUNT)
+                    add_line("evaluation",
+                             [answer, value.username, "accept",
+                              datetime.datetime.today()])
+                elif answer == "deny":
+                    COUNT += 1
+                    delete_line("evaluation", COUNT)
+                    add_line("evaluation",
+                             [answer, value.username, "deny",
+                              datetime.datetime.today()])
+
 # if val[1] = 'admin':
 # see and do admin related activities
 # elif val[1] = 'student':

@@ -34,6 +34,7 @@
   -     1.See project status: 
         2.See pending request: 
         3.Send out requests to a potential evaluation 
+        4.accept or deny evaluation request
   - **admin**
   -     1.Add any file information
         2.Delete any file information
