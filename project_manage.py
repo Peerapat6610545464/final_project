@@ -9,12 +9,7 @@ db = DB()
 read = Read()
 RESPONSE = "waiting"
 RESPONSE_DATE = "-"
-FILE_PERSON = db.search("person")
-FILE_LOGIN = db.search("login")
-FILE_PROJECT = db.search("project")
-FILE_ADVISOR = db.search("advisor_pending_request")
-FILE_MEMBER = db.search("member_pending_request")
-FILE_EVA = db.search("evaluation")
+
 
 def initializing():
     """to initializing the program and create an object to read all csv files
@@ -267,6 +262,7 @@ while True:
             file.update(ID, role, role2)
             print(f"{ID} {role} has been change to {role2}!!")
     if val[1] == 'student':
+        FILE_MEMBER = db.search("member_pending_request")
         print("---------------------")
         print("1.See member pending request: ")
         print("2.accepted or deny member pending request: ")
@@ -299,10 +295,16 @@ while True:
                     add_line("member_pending_request",
                              [answer, value.username, "deny",
                               datetime.datetime.today()])
+            FILE_LOGIN = db.search("login")
+            FILE_LOGIN.update(val[0], 'role', 'member')
         if choice == "3":
+            FILE_LOGIN = db.search("login")
             FILE_LOGIN.update(val[0], 'role', 'lead')
             print("You have been promoted to lead!!")
     if val[1] == 'member':
+        FILE_PROJECT = db.search("project")
+        FILE_MEMBER = db.search("member_pending_request")
+        FILE_ADVISOR = db.search("member_pending_request")
         print("---------------------")
         print("1.See project status: ")
         print("2.modify project information: ")
@@ -337,6 +339,9 @@ while True:
             add_line("evaluation", [projectID, Name,
                                     RESPONSE, RESPONSE, RESPONSE_DATE, ])
     if val[1] == 'lead':
+        FILE_MEMBER = db.search("member_pending_request")
+        FILE_PROJECT = db.search("project")
+        FILE_ADVISOR = db.search("advisor_pending_request")
         print("---------------------")
         print("1.See project status: ")
         print("2.modify project information: ")
@@ -387,6 +392,7 @@ while True:
             add_line("evaluation", [projectID, Name,
                                     RESPONSE, RESPONSE, RESPONSE_DATE, ])
     if val[1] == 'faculty':
+        FILE_PROJECT = db.search("project")
         print("---------------------")
         print("1.See project status: ")
         print("2.accepted or deny advisor pending request: ")
@@ -409,6 +415,7 @@ while True:
                     add_line("advisor_pending_request",
                              [answer, value.username, "accept",
                               datetime.datetime.today()])
+
                     print(
                         f"you have accepted to be "
                         f"advisor of group {answer}")
@@ -418,7 +425,11 @@ while True:
                     add_line("advisor_pending_request",
                              [answer, value.username, "deny",
                               datetime.datetime.today()])
+            FILE_LOGIN = db.search("login")
+            FILE_LOGIN.update(val[0], 'role', 'advisor')
     if val[1] == 'advisor':
+        FILE_PROJECT = db.search("project")
+        FILE_EVA = db.search("evaluation")
         print("---------------------")
         print("1.See project status: ")
         print("2.See pending request: ")
@@ -429,11 +440,18 @@ while True:
             break
         if choice == "1":
             COUNT = 1
+            for i in FILE_EVA.table:
+                print(f"{COUNT}. {i}")
+                COUNT += 1
+            if COUNT == 1:
+                print("there is no project")
+        if choice == "2":
+            COUNT = 1
             for i in FILE_PROJECT.table:
-                if value.username in (i['member1'], i['member2']):
-                    print(f"{COUNT}. {i}")
-                    COUNT += 1
-
+                print(f"{COUNT}. {i}")
+                COUNT += 1
+            if COUNT == 1:
+                print("there is no request")
         if choice == "3":
             projectID = input("ProjectID: ")
             title = input("title: ")
@@ -442,6 +460,7 @@ while True:
                                     RESPONSE, RESPONSE, RESPONSE_DATE, ])
 
         if choice == "4":
+            FILE_EVA = db.search("evaluation")
             answer = input("accept request ID or deny: ")
             COUNT = 1
             for i in FILE_EVA.table:
@@ -457,6 +476,7 @@ while True:
                     add_line("evaluation",
                              [answer, value.username, "deny",
                               datetime.datetime.today()])
+            print(f"you have {answer} the request")
 
 # if val[1] = 'admin':
 # see and do admin related activities
