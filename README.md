@@ -41,6 +41,18 @@
         4.Update any status
 * csv file
   - **login.csv**
+  -     log in information
+        ID,username,password,role
   - **person.csv**
+  -     person information
+        ID,first,last,type
   - **project.csv**
-  - **login.csv**
+  -     project information
+        ID,title,lead,member1,member2,advisor,status,project_information
+  - **advisor_pending_request.csv**
+  -     aadvisor_pending_request
+        ID,to_be_advisorr,response,response_date
+  - **member_pending_request.csv**
+  -     member_pending_request
+        ID,to_be_member,response,response_date
+  - 
