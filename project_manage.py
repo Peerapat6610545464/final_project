@@ -205,7 +205,7 @@ while True:
         if choice == "q":
             break
         if choice == "1":
-            file_add = input("File: ")
+            file_add = input("File to modify: ")
             if file_add == "persons":
                 ID = input("ID: ")
                 first = input("first name: ")
