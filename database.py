@@ -1,15 +1,20 @@
-# try wrapping the code below that reads a persons.csv file in a class and make it more general such that it can read in any csv file
+"""this modul is to manage data base"""
+# try wrapping the code below that reads a persons.csv file in a class and
+# make it more general such that it can read in any csv file
 
-import csv, os
-import copy
+import csv
+import os
 
 
 class Read:
+    """to read file"""
     def __init__(self):
+        """get location"""
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     def csv_reader(self, name):
+        """read any csv file"""
         list_ = []
 
         with open(os.path.join(self.__location__, name)) as f:
@@ -21,75 +26,50 @@ class Read:
 
 # add in code for a Database class
 class DB:
+    """data base"""
     def __init__(self):
+        """set database default"""
         self.database = []
 
     def insert(self, table):
+        """insert table"""
         self.database.append(table)
 
     def search(self, table_name):
+        """search data"""
         for table in self.database:
             if table.table_name == table_name:
                 return table
         return None
 
     def database(self):
+        """return data"""
         return self.database
 
 
 # add in code for a Table class
 
 class Table:
+    """table to sore data"""
     def __init__(self, table_name, table):
+        """table name and value"""
         self.table_name = table_name
         self.table = table
 
     def insert(self, other):
+        """insert data"""
         self.table += [other]
 
     def update(self, user_id, key, value, ):
+        """update data"""
         for i in self.table:
             if i['ID'] == user_id:
                 i[key] = value
 
-    def join(self, other_table, common_key):
-        joined_table = Table(
-            self.table_name + '_joins_' + other_table.table_name, [])
-        for item1 in self.table:
-            for item2 in other_table.table:
-                if item1[common_key] == item2[common_key]:
-                    dict1 = copy.deepcopy(item1)
-                    dict2 = copy.deepcopy(item2)
-                    dict1.update(dict2)
-                    joined_table.table.append(dict1)
-        return joined_table
 
-    def filter(self, condition):
-        filtered_table = Table(self.table_name + '_filtered', [])
-        for item1 in self.table:
-            if condition(item1):
-                filtered_table.table.append(item1)
-        return filtered_table
 
-    def aggregate(self, function, aggregation_key):
-        temps = []
-        for item1 in self.table:
-            temps.append(float(item1[aggregation_key]))
-        return function(temps)
+# modify the code in the Table class so that it supports the insert
+# operation where an entry can be added to a list of dictionary
 
-    def select(self, attributes_list):
-        temps = []
-        for item1 in self.table:
-            dict_temp = {}
-            for key in item1:
-                if key in attributes_list:
-                    dict_temp[key] = item1[key]
-            temps.append(dict_temp)
-        return temps
-
-    def __str__(self):
-        return self.table_name + ':' + str(self.table)
-
-# modify the code in the Table class so that it supports the insert operation where an entry can be added to a list of dictionary
-
-# modify the code in the Table class so that it supports the update operation where an entry's value associated with a key can be updated
+# modify the code in the Table class so that it supports the update
+# operation where an entry's value associated with a key can be updated
