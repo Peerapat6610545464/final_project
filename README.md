@@ -1,14 +1,14 @@
 # Final project for 2023's 219114/115 Programming I
 * python file 
   - **database.py**
-    - to manage data
+  -     to manage data
     - `class Table` (list of dictionaries)
     - `class DB` (list of table)
     - `class Read` (read any csv file)
   - **project_manage.py**
-    - main part of the program
-    - start the program and receive user inout
-    - program that take user input and to the task user request
+  -     main part of the program
+        start the program and receive user inout
+        program that take user input and to the task user request
     - `def initializing` (use class Table, DB, Read to store data)
     - `class Log` (user log in)
     - `def exit_` (to exit the program and update the change in data)
@@ -56,4 +56,6 @@
   - **member_pending_request.csv**
   -     member_pending_request
         ID,to_be_member,response,response_date
-  - 
+* bug
+  -     sometime random "[]" appear in member or advisor csv file
+        only change status in login.csv
