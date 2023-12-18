@@ -69,26 +69,26 @@
 
 # Table detailing each role and its actions
 
-| Role    | Action                                         | Method                 | Class   | Completion |
-|---------|------------------------------------------------|------------------------|---------|------------|
-| admin   | Add any file information                       | add_line               | admin   | 100%       |
-| admin   | Delete any file information                    | delete_line            | admin   | 100%       |
-| admin   | See any file information                       | search                 | admin   | 100%       |
-| admin   | Update any status                              | update                 | admin   | 100%       |
-| student | See member pending request                     | input                  | student | 100%       |
-| student | accepted or deny member pending request        | add_line, delete_line  | student | 100%       |
-| student | Become a lead                                  | add_line, delete_line  | student | 100%       |
-| member  | See project status                             | search                 | member  | 100%       |
-| member  | See and Modified project information           | add_line, delete_line  | member  | 100%       |
-| member  | See who has responded to the requests sent out | search                 | member  | 100%       |
-| lead    | See project status                             | search                 | lead    | 100%       |
-| lead    | modify project information                     | add_line,d delete_line | lead    | 100%       |
-| lead    | See who has responded to the requests sent out | search                 | lead    | 100%       |
-| lead    | Send out requests to potential members         | add_line,d delete_line | lead    | 100%       |
-| lead    | Send out requests to a potential advisor       | add_line,d delete_line | lead    | 100%       |
-| faculty | See project status                             | search                 | faculty | 100%       |
-| faculty | accepted or deny advisor pending request       | add_line,d delete_line | faculty | 100%       |
-| advisor | See project status                             | search                 | advisor | 100%       |
-| advisor | See pending request                            | search                 | advisor | 100%       |
-| advisor | Send out requests to a potential evaluation    | add_line,d delete_line | advisor | 100%       |
-| advisor | accept or deny evaluation request              | add_line,d delete_line | advisor | 100%       |
+| Role    | Action                                         | function               | Class        | Completion |
+|---------|------------------------------------------------|------------------------|--------------|------------|
+| admin   | Add any file information                       | add_line               | Table,DB     | 100%       |
+| admin   | Delete any file information                    | delete_line            | Table,DB     | 100%       |
+| admin   | See any file information                       | search                 | Table,DB     | 100%       |
+| admin   | Update any status                              | update                 | Table,DB     | 100%       |
+| student | See member pending request                     | input                  | Table,DB     | 100%       |
+| student | accepted or deny member pending request        | add_line, delete_line  | Table,DB,Log | 100%       |
+| student | Become a lead                                  | add_line, delete_line  | Table,DB     | 100%       |
+| member  | See project status                             | search                 | Table,DB,Log | 100%       |
+| member  | See and Modified project information           | add_line, delete_line  | Table,DB,Log | 100%       |
+| member  | See who has responded to the requests sent out | search                 | Table,DB     | 100%       |
+| lead    | See project status                             | search                 | Table,DB,Log | 100%       |
+| lead    | modify project information                     | add_line,d delete_line | Table,DB,Log | 100%       |
+| lead    | See who has responded to the requests sent out | search                 | Table,DB     | 100%       |
+| lead    | Send out requests to potential members         | add_line,d delete_line | Table,DB     | 100%       |
+| lead    | Send out requests to a potential advisor       | add_line,d delete_line | Table,DB     | 100%       |
+| faculty | See project status                             | search                 | Table,DB,Log | 100%       |
+| faculty | accepted or deny advisor pending request       | add_line,d delete_line | Table,DB,Log | 100%       |
+| advisor | See project status                             | search                 | Table,DB     | 100%       |
+| advisor | See pending request                            | search                 | Table,DB     | 100%       |
+| advisor | Send out requests to a potential evaluation    | add_line,d delete_line | Table,DB     | 100%       |
+| advisor | accept or deny evaluation request              | add_line,d delete_line | Table,DB,Log | 100%       |
