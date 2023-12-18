@@ -38,6 +38,7 @@
   * bug
     -     sometime random "[]" appear in member or advisor csv file
           only change status in login.csv
+          type (int,str)
     * role
       - **student**
       -     1.See member pending request
