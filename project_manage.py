@@ -163,17 +163,17 @@ def add_line(get_file, value_):
                'last': value_[2], 'type': value_[4]}
         file__.insert(key)
     if get_file == "project":
-        key = {'projectID': value_[0], 'title': value_[1],
+        key = {'ID': value_[0], 'title': value_[1],
                'lead': value_[2], 'member1': value_[3],
                'member2': value_[4], "advisor": value_[5],
                "status": value_[6], "project_information": value_[7]}
         file__.insert(key)
     if get_file == "member_pending_request":
-        key = {'projectID': value_[0], 'member': value_[1],
+        key = {'ID': value_[0], 'to_be_member': value_[1],
                'response': value_[2], 'response_date': value_[3], }
         file__.insert(key)
     if get_file == "advisor_pending_request":
-        key = {'projectID': value_[0], 'member': value_[1],
+        key = {'ID': value_[0], 'to_be_advisor': value_[1],
                'response': value_[2], 'response_date': value_[3], }
         file__.insert(key)
 
