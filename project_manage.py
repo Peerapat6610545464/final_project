@@ -1,14 +1,25 @@
 # import database module
-from database import Read, DB, Table
+"""the module use to manage project"""
 import csv
 import datetime
 import sys
+from database import Read, DB, Table
+
 # define a funcion called initializing
 db = DB()
 read = Read()
+RESPONSE = "waiting"
+RESPONSE_DATE = "-"
+FILE_PERSON = db.search("person")
+FILE_LOGIN = db.search("login")
+FILE_PROJECT = db.search("project")
+FILE_ADVISOR = db.search("advisor_pending_request")
+FILE_MEMBER = db.search("member_pending_request")
 
 
 def initializing():
+    """to initializing the program and create an object to read all csv files
+    that will serve as a persistent state for this program"""
     login_ = read.csv_reader("login.csv")
     person = read.csv_reader("persons.csv")
     project = read.csv_reader("project.csv")
@@ -42,61 +53,65 @@ def initializing():
 # define a funcion called login
 
 
-def exit():
-    with open('login.csv', 'w', newline='') as file1:
-        file__ = csv.writer(file1)
+def exit_():
+    """to save change of the program"""
+    with open('login.csv', 'w', newline='') as login:
+        file__ = csv.writer(login)
         file__.writerow(['ID', 'username', 'password', 'role'])
-        for i in db.search('login').table:
-            file__.writerow(i.values())
-
-    with open('persons.csv', 'w', newline='') as file2:
-        file__ = csv.writer(file2)
+        for index in db.search('login').table:
+            file__.writerow(index.values())
+        login.close()
+    with open('persons.csv', 'w', newline='') as persons:
+        file__ = csv.writer(persons)
         file__.writerow(['ID', 'first', 'last', 'type'])
-        for i in db.search('person').table:
-            file__.writerow(i.values())
-
-    with open('project.csv', 'w', newline='') as file3:
-        file__ = csv.writer(file3)
-        file__.writerow(['ID', 'title', 'tead', 'member1'
+        for index in db.search('person').table:
+            file__.writerow(index.values())
+        persons.close()
+    with open('project.csv', 'w', newline='') as project:
+        file__ = csv.writer(project)
+        file__.writerow(['ID', 'title', 'lead', 'member1'
                             , 'member2', 'advisor',
                          'status', 'project_information'])
-        for i in db.search('project').table:
-            print(i)
-            file__.writerow(i.values())
-
-    with open('advisor_pending_request.csv', 'w', newline='') as file4:
-        file__ = csv.writer(file4)
+        for index in db.search('project').table:
+            file__.writerow(index.values())
+        project.close()
+    with open('advisor_pending_request.csv', 'w', newline='') as advisor_:
+        file__ = csv.writer(advisor_)
         file__.writerow(['ID', 'title' 'to_be_advisor_name',
-                         'Response', 'Response_date'])
-        for i in db.search('advisor_pending_request').table:
-            file__.writerow(i.values())
-
-    with open('member_pending_request.csv', 'w', newline='') as file5:
-        file__ = csv.writer(file5)
+                         'response', 'response_date'])
+        for index in db.search('advisor_pending_request').table:
+            file__.writerow(index.values())
+        advisor_.close()
+    with open('member_pending_request.csv', 'w', newline='') as member:
+        file__ = csv.writer(member)
         file__.writerow(['ID', 'title', 'to_be_name_name',
                          'response', 'response_date'])
-        for i in db.search('member_pending_request').table:
-            file__.writerow(i.values())
+        for index in db.search('member_pending_request').table:
+            file__.writerow(index.values())
+        member.close()
 
 
-class Log_in:
+class Log:
+    """this class is for user to log in"""
 
     def __init__(self):
+        """get username and passwod"""
         print("-----LOGIN TABLE-----")
         self._username = input("Username: ")
         self._password = input("Password: ")
 
     def log(self):
+        """log in"""
         login_1 = db.search('login')
-        for i in login_1.table:
-            if self._username == i['username'] and \
-                    self._password == i['password']:
-                print(f"Your log in as {i['role']}")
-                return [i['ID'], i['role']]
-        # print(login_1.table)
+        for index in login_1.table:
+            if self._username == index['username'] and \
+                    self._password == index['password']:
+                print(f"Your log in as {index['role']}")
+                return [index['ID'], index['role']]
 
     @property
     def username(self):
+        """return username"""
         return self._username
 
     # here are things to do in this function:
@@ -123,7 +138,7 @@ class Log_in:
 initializing()
 
 while True:
-    value = Log_in()
+    value = Log()
     val = value.log()
     if val is not None:
         break
@@ -131,40 +146,36 @@ while True:
 
 
 def delete_line(file_delete_, file_delete_number_):
-    file = db.search(f'{file_delete_}').table
-    print(file)
-    del file[file_delete_number_ - 2]
-    print(file)
+    """delete line """
+    file__ = db.search(f'{file_delete_}').table
+    del file__[file_delete_number_ - 2]
 
 
-def add_line(file_, value):
-    file = db.search(f'{file_}')
-    print(file)
-    if file_ == "login":
-        key = {'ID': value[0], 'username': value[1], 'password': value[2],
-               'role': value[3]}
-        file.insert(key)
-    if file_ == "persons":
-        key = {'ID': value[0], 'first': value[1],
-               'last': value[2], 'type': value[4]}
-        file.insert(key)
-    if file_ == "project":
-        key = {'projectID': value[0], 'title': value[1],
-               'lead': value[2], 'member1': value[3],
-               'member2': value[4], "advisor": value[5],
-               "status": value[6], "project_information": value[7]}
-        file.insert(key)
-    if file_ == "member_pending_request":
-        key = {'projectID': value[0], 'member': value[1],
-               'response': value[2], 'response_date': value[3], }
-        file.insert(key)
-    if file_ == "advisor_pending_request":
-        key = {'projectID': value[0], 'member': value[1],
-               'response': value[2], 'response_date': value[3], }
-        file.insert(key)
-
-    def answer_request(requestID):
-        pass
+def add_line(get_file, value_):
+    """add line"""
+    file__ = db.search(f'{get_file}')
+    if get_file == "login":
+        key = {'ID': value_[0], 'username': value_[1], 'password': value_[2],
+               'role': value_[3]}
+        file__.insert(key)
+    if get_file == "persons":
+        key = {'ID': value_[0], 'first': value_[1],
+               'last': value_[2], 'type': value_[4]}
+        file__.insert(key)
+    if get_file == "project":
+        key = {'projectID': value_[0], 'title': value_[1],
+               'lead': value_[2], 'member1': value_[3],
+               'member2': value_[4], "advisor": value_[5],
+               "status": value_[6], "project_information": value_[7]}
+        file__.insert(key)
+    if get_file == "member_pending_request":
+        key = {'projectID': value_[0], 'member': value_[1],
+               'response': value_[2], 'response_date': value_[3], }
+        file__.insert(key)
+    if get_file == "advisor_pending_request":
+        key = {'projectID': value_[0], 'member': value_[1],
+               'response': value_[2], 'response_date': value_[3], }
+        file__.insert(key)
 
 
 # based on the return value for login, activate the code that performs
@@ -206,21 +217,17 @@ while True:
                          [ID, title, lead, member1,
                           member2, advisor, status, info])
             if file_add == "member_pending_request":
-                ProjectID = input("ProjectID: ")
+                projectID = input("ProjectID: ")
                 title = input("title: ")
                 Name = input("Name: ")
-                Response = "waiting"
-                Response_date = "-"
-                add_line(file_add, [ProjectID, Name,
-                                    Response, Response, Response_date, ])
+                add_line(file_add, [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
             if file_add == "advisor_pending_request":
-                ProjectID = input("ProjectID: ")
+                projectID = input("ProjectID: ")
                 title = input("title: ")
                 Name = input("Name: ")
-                Response = "waiting"
-                Response_date = "-"
-                add_line(file_add, [ProjectID, Name,
-                                    Response, Response, Response_date, ])
+                add_line(file_add, [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
             print("File has been added!!")
         if choice == "2":
             file_delete = input("File: ")
@@ -241,8 +248,6 @@ while True:
             file.update(ID, role, role2)
             print(f"{ID} {role} has been change to {role2}!!")
     if val[1] == 'student':
-        file = db.search("member_pending_request")
-        file_ = db.search("login")
         print("---------------------")
         print("1.See member pending request: ")
         print("2.accepted or deny member pending request: ")
@@ -252,30 +257,27 @@ while True:
             break
         if choice == "1":
             print("member pending request:")
-            count = 1
-            for i in file.table:
-                print(f"{count}. {i}")
-                count += 1
+            COUNT = 1
+            for i in FILE_MEMBER.table:
+                print(f"{COUNT}. {i}")
+                COUNT += 1
         if choice == "2":
             answer = input("accept request ID or deny: ")
-            count = 1
-            for i in file.table:
-                try:
-                    if i['ID'] == answer:
-                        count += 1
-                        delete_line("member_pending_request", count)
-                        add_line("member_pending_request",
-                                 [answer, value.username, "accept",
-                                  datetime.datetime.today()])
-                        print(
-                            f"you have accepted to be member of group {answer}")
-                except:
-                    pass
+            COUNT = 1
+            for i in FILE_MEMBER.table:
+                if i['ID'] == answer:
+                    COUNT += 1
+                    delete_line("member_pending_request", COUNT)
+                    add_line("member_pending_request",
+                             [answer, value.username, "accept",
+                              datetime.datetime.today()])
+                    print(
+                        f"you have accepted to be "
+                        f"member of group {answer}")
         if choice == "3":
-            file_.update(val[0], 'role', 'lead')
+            FILE_LOGIN.update(val[0], 'role', 'lead')
             print("You have been promoted to lead!!")
     if val[1] == 'member':
-        file = db.search("project")
         print("---------------------")
         print("1.See project status: ")
         print("2.modify project information: ")
@@ -284,30 +286,25 @@ while True:
         if choice == "q":
             break
         if choice == "1":
-            count = 1
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    print(f"{count}. {i}")
-                    count += 1
+            COUNT = 1
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    print(f"{COUNT}. {i}")
+                    COUNT += 1
         if choice == "2":
             info = input("Project information ID: ")
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    file.update(i['ID'], "project_information", info)
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    FILE_PROJECT.update(i['ID'], "project_information", info)
         if choice == "3":
-            file1 = db.search("member_pending_request").table
-            file2 = db.search("advisor_pending_request").table
             print("member_pending_request: ")
-            for i in file1:
+            for i in FILE_MEMBER.table:
                 print(i)
             print("---------------------")
             print("advisor_pending_request: ")
-            for i in file2:
+            for i in FILE_ADVISOR.table:
                 print(i)
     if val[1] == 'lead':
-        file = db.search("project")
         print("---------------------")
         print("1.See project status: ")
         print("2.modify project information: ")
@@ -318,68 +315,58 @@ while True:
         if choice == "q":
             break
         if choice == "1":
-            count = 1
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    print(f"{count}. {i}")
-                    count += 1
+            COUNT = 1
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    print(f"{COUNT}. {i}")
+                    COUNT += 1
         if choice == "2":
             info = input("Project information ID: ")
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    file.update(i['ID'], "project_information", info)
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    FILE_PROJECT.update(i['ID'], "project_information", info)
         if choice == "3":
-            file1 = db.search("member_pending_request").table
-            file2 = db.search("advisor_pending_request").table
             print("member_pending_request: ")
-            for i in file1:
+            for i in FILE_MEMBER.table:
                 print(i)
             print("---------------------")
             print("advisor_pending_request: ")
-            for i in file2:
+            for i in FILE_ADVISOR.table:
                 print(i)
         if choice == "4":
             print("Create member request:")
-            file_add = "member_pending_request"
             ProjectID = input("ProjectID: ")
             Name = input("Name: ")
-            Response = "waiting"
-            Response_date = "-"
-            add_line(file_add, [ProjectID, Name,
-                                Response, Response, Response_date, ])
+            add_line("member_pending_request", [ProjectID, Name,
+                                                RESPONSE, RESPONSE,
+                                                RESPONSE_DATE, ])
         if choice == "5":
             print("Create advisor request:")
-            file_add = "advisor_pending_request"
             ProjectID = input("ProjectID: ")
             Name = input("Name: ")
-            Response = "waiting"
-            Response_date = "-"
-            add_line(file_add, [ProjectID, Name,
-                                Response, Response, Response_date, ])
+            add_line("advisor_pending_request", [ProjectID, Name,
+                                                 RESPONSE, RESPONSE,
+                                                 RESPONSE_DATE, ])
     if val[1] == 'faculty':
         print("---------------------")
         print("1.See project status: ")
         print("2.accepted or deny advisor pending request: ")
-        file = db.search("project")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
         if choice == "1":
-            count = 1
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    print(f"{count}. {i}")
-                    count += 1
+            COUNT = 1
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    print(f"{COUNT}. {i}")
+                    COUNT += 1
         if choice == "2":
             answer = input("accept request ID or deny: ")
-            count = 1
-            for i in file.table:
+            COUNT = 1
+            for i in FILE_PROJECT.table:
                 if i['ID'] == answer:
-                    count += 1
-                    delete_line("advisor_pending_request", count)
+                    COUNT += 1
+                    delete_line("advisor_pending_request", COUNT)
                     add_line("advisor_pending_request",
                              [answer, value.username, "accept",
                               datetime.datetime.today()])
@@ -387,7 +374,6 @@ while True:
                         f"you have accepted to be "
                         f"advisor of group {answer}")
     if val[1] == 'advisor':
-        file = db.search("project")
         print("---------------------")
         print("1.See project status: ")
         print("2.See pending request: ")
@@ -396,27 +382,25 @@ while True:
         if choice == "q":
             break
         if choice == "1":
-            count = 1
-            for i in file.table:
-                if i['member1'] == value.username \
-                        or i['member2'] == value.username:
-                    print(f"{count}. {i}")
-                    count += 1
+            COUNT = 1
+            for i in FILE_PROJECT.table:
+                if value.username in (i['member1'], i['member2']):
+                    print(f"{COUNT}. {i}")
+                    COUNT += 1
+
         if choice == "3":
             file = db.search("advisor_pending_request").table
             print("Create evaluation request:")
-            file_add = "advisor_pending_request"
             ProjectID = input("ProjectID: ")
             for i in file:
                 if i['ID'] == ProjectID:
                     print("request already exist")
-                    exit()
+                    exit_()
                     sys.exit()
             name = input("Name: ")
-            Response = "waiting"
-            Response_date = "-"
-            add_line(file_add, [ProjectID, name,
-                                Response, Response, Response_date, ])
+            add_line("advisor_pending_request", [ProjectID, name,
+                                                 RESPONSE, RESPONSE,
+                                                 RESPONSE_DATE, ])
 
 # if val[1] = 'admin':
 # see and do admin related activities
@@ -432,4 +416,4 @@ while True:
 # see and do advisor related activities
 
 # once everyhthing is done, make a call to the exit function
-exit()
+exit_()
