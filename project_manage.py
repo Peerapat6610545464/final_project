@@ -25,6 +25,7 @@ def initializing():
     project = read.csv_reader("project.csv")
     advisor_pending_request = read.csv_reader("advisor_pending_request.csv")
     member_pending_request = read.csv_reader("member_pending_request.csv")
+    evaluation = read.csv_reader("evaluation.csv")
     person_table = Table("person", person)
     login_table = Table("login", login_)
     project_table = Table("project", project)
@@ -32,11 +33,13 @@ def initializing():
                                           advisor_pending_request)
     member_pending_request_table = Table("member_pending_request",
                                          member_pending_request)
+    evaluation_table = Table("evaluation", evaluation)
     db.insert(person_table)
     db.insert(login_table)
     db.insert(project_table)
     db.insert(advisor_pending_request_table)
     db.insert(member_pending_request_table)
+    db.insert(evaluation_table)
 
 
 # here are things to do in this function:
@@ -84,9 +87,16 @@ def exit_():
         advisor_.close()
     with open('member_pending_request.csv', 'w', newline='') as member:
         file__ = csv.writer(member)
-        file__.writerow(['ID', 'title', 'to_be_name_name',
+        file__.writerow(['ID', 'title', 'to_be_member_name',
                          'response', 'response_date'])
         for index in db.search('member_pending_request').table:
+            file__.writerow(index.values())
+        member.close()
+    with open('evaluation.csv', 'w', newline='') as evaluation:
+        file__ = csv.writer(evaluation)
+        file__.writerow(['ID', 'title', 'to_evaluate',
+                         'response', 'response_date'])
+        for index in db.search('evaluation').table:
             file__.writerow(index.values())
         member.close()
 
@@ -176,6 +186,10 @@ def add_line(get_file, value_):
         key = {'ID': value_[0], 'to_be_advisor': value_[1],
                'response': value_[2], 'response_date': value_[3], }
         file__.insert(key)
+    if get_file == "evaluation":
+        key = {'ID': value_[0], 'to_evaluate': value_[1],
+               'response': value_[2], 'response_date': value_[3], }
+        file__.insert(key)
 
 
 # based on the return value for login, activate the code that performs
@@ -223,6 +237,12 @@ while True:
                 add_line(file_add, [projectID, Name,
                                     RESPONSE, RESPONSE, RESPONSE_DATE, ])
             if file_add == "advisor_pending_request":
+                projectID = input("ProjectID: ")
+                title = input("title: ")
+                Name = input("Name: ")
+                add_line(file_add, [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
+            if file_add == "evaluation":
                 projectID = input("ProjectID: ")
                 title = input("title: ")
                 Name = input("Name: ")
@@ -282,6 +302,7 @@ while True:
         print("1.See project status: ")
         print("2.modify project information: ")
         print("3.See who has responded to the requests sent out")
+        print("4.Create evaluation request")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
@@ -304,6 +325,12 @@ while True:
             print("advisor_pending_request: ")
             for i in FILE_ADVISOR.table:
                 print(i)
+        if choice == "4":
+            projectID = input("ProjectID: ")
+            title = input("title: ")
+            Name = input("Name: ")
+            add_line("evaluation", [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
     if val[1] == 'lead':
         print("---------------------")
         print("1.See project status: ")
@@ -311,6 +338,7 @@ while True:
         print("3.See who has responded to the requests sent out")
         print("4.Send out requests to potential members")
         print("5.Send out requests to a potential advisor")
+        print("6.Create evaluation request")
         choice = input("Task number(q to update or quit): ")
         if choice == "q":
             break
@@ -347,6 +375,12 @@ while True:
             add_line("advisor_pending_request", [ProjectID, Name,
                                                  RESPONSE, RESPONSE,
                                                  RESPONSE_DATE, ])
+        if choice == "6":
+            projectID = input("ProjectID: ")
+            title = input("title: ")
+            Name = input("Name: ")
+            add_line("evaluation", [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
     if val[1] == 'faculty':
         print("---------------------")
         print("1.See project status: ")
@@ -389,19 +423,11 @@ while True:
                     COUNT += 1
 
         if choice == "3":
-            file = db.search("advisor_pending_request").table
-            print("Create evaluation request:")
-            ProjectID = input("ProjectID: ")
-            for i in file:
-                if i['ID'] == ProjectID:
-                    print("request already exist")
-                    exit_()
-                    sys.exit()
-            name = input("Name: ")
-            add_line("advisor_pending_request", [ProjectID, name,
-                                                 RESPONSE, RESPONSE,
-                                                 RESPONSE_DATE, ])
-
+            projectID = input("ProjectID: ")
+            title = input("title: ")
+            Name = input("Name: ")
+            add_line("evaluation", [projectID, Name,
+                                    RESPONSE, RESPONSE, RESPONSE_DATE, ])
 # if val[1] = 'admin':
 # see and do admin related activities
 # elif val[1] = 'student':
