@@ -2,7 +2,6 @@
 """the module use to manage project"""
 import csv
 import datetime
-import sys
 from database import Read, DB, Table
 
 # define a funcion called initializing
