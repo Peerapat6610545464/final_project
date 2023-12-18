@@ -27,4 +27,4 @@ ID,username,password,role
 3,a,1,d
 1,a,b,admin
 3,d,e,student
-4,r,w,lead
+4,r,w,advisor

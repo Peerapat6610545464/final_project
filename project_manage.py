@@ -2,7 +2,7 @@
 from database import Read, DB, Table
 import csv
 import datetime
-
+import sys
 # define a funcion called initializing
 db = DB()
 read = Read()
@@ -267,7 +267,8 @@ while True:
                         add_line("member_pending_request",
                                  [answer, value.username, "accept",
                                   datetime.datetime.today()])
-                        print(f"you have accepted to be member of group {answer}")
+                        print(
+                            f"you have accepted to be member of group {answer}")
                 except:
                     pass
         if choice == "3":
@@ -360,12 +361,62 @@ while True:
     if val[1] == 'faculty':
         print("---------------------")
         print("1.See project status: ")
-        print("2.accepted or deny member pending request: ")
+        print("2.accepted or deny advisor pending request: ")
+        file = db.search("project")
+        choice = input("Task number(q to update or quit): ")
+        if choice == "q":
+            break
+        if choice == "1":
+            count = 1
+            for i in file.table:
+                if i['member1'] == value.username \
+                        or i['member2'] == value.username:
+                    print(f"{count}. {i}")
+                    count += 1
+        if choice == "2":
+            answer = input("accept request ID or deny: ")
+            count = 1
+            for i in file.table:
+                if i['ID'] == answer:
+                    count += 1
+                    delete_line("advisor_pending_request", count)
+                    add_line("advisor_pending_request",
+                             [answer, value.username, "accept",
+                              datetime.datetime.today()])
+                    print(
+                        f"you have accepted to be "
+                        f"advisor of group {answer}")
     if val[1] == 'advisor':
+        file = db.search("project")
         print("---------------------")
         print("1.See project status: ")
         print("2.See pending request: ")
-        print("3.send evaluate request: ")
+        print("3.Send out requests to a potential evaluation ")
+        choice = input("Task number(q to update or quit): ")
+        if choice == "q":
+            break
+        if choice == "1":
+            count = 1
+            for i in file.table:
+                if i['member1'] == value.username \
+                        or i['member2'] == value.username:
+                    print(f"{count}. {i}")
+                    count += 1
+        if choice == "3":
+            file = db.search("advisor_pending_request").table
+            print("Create evaluation request:")
+            file_add = "advisor_pending_request"
+            ProjectID = input("ProjectID: ")
+            for i in file:
+                if i['ID'] == ProjectID:
+                    print("request already exist")
+                    exit()
+                    sys.exit()
+            name = input("Name: ")
+            Response = "waiting"
+            Response_date = "-"
+            add_line(file_add, [ProjectID, name,
+                                Response, Response, Response_date, ])
 
 # if val[1] = 'admin':
 # see and do admin related activities
